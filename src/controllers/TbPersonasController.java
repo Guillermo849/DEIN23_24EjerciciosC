@@ -14,12 +14,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Persona;
 
@@ -56,7 +58,16 @@ public class TbPersonasController implements Initializable{
 
     @FXML
     private TableColumn<Persona, Integer> tbColEdad;
+    
+    @FXML
+    private Button btnModificar;
 
+    @FXML
+    private Button btnEliminar;
+    
+    @FXML
+    private Label lblPersona;
+    
     @FXML
     void aniadirPersona(ActionEvent event) {
     	
@@ -66,7 +77,7 @@ public class TbPersonasController implements Initializable{
     	 * Si algunos de los TextFields está vacio entonces saltará una Ventana 
     	 * 	de Error con los campos NULL
     	 * */
-    	if (tfNombre.getText().isEmpty() || tfApellidos.getText().isEmpty() || tfEdad.getText().isEmpty()) {
+    	if (tfNombre.getText().isEmpty() || tfApellidos.getText().isEmpty() || tfEdad.getText().isEmpty() || !tfEdad.getText().matches("[0-9]*")) {
     		Alert alertWindows = new Alert(Alert.AlertType.ERROR);
     		
     		Stage stage = (Stage) alertWindows.getDialogPane().getScene().getWindow();
@@ -89,6 +100,7 @@ public class TbPersonasController implements Initializable{
 			
 			alertWindows.setContentText(mensaje);
     		alertWindows.showAndWait();
+    		
     	} else {
     	/*
     	 * Añadirá la persona a la tabla
@@ -112,9 +124,41 @@ public class TbPersonasController implements Initializable{
 	        infoWindow.setHeaderText(null);
 	        infoWindow.setContentText("Persona agregada correctamente");
 	        infoWindow.showAndWait();
+	        
+	        /* Eliminar texto dentrode los campos TextFields*/
+    		tfNombre.setText(" ".toString());
+        	
+        	tfApellidos.setText(" ".toString());
+        	
+        	tfEdad.setText(" ".toString());
+	        
     	}
     }
-
+    
+    @FXML
+    void selectPersona(MouseEvent event) {
+    	
+    	if (tbViewPersonas.getSelectionModel().getSelectedItem() != null) {
+    		Persona personMod = tbViewPersonas.getSelectionModel().getSelectedItem();
+        	
+        	tfNombre.setText(personMod.getNombre().toString());
+        	
+        	tfApellidos.setText(personMod.getApellido().toString());
+        	
+        	tfEdad.setText(personMod.getEdad()+"".toString());
+    	}
+    }
+    
+    @FXML
+    void modPersona(ActionEvent event) {
+    	
+    }
+    
+    @FXML
+    void eliminarPersona(ActionEvent event) {
+    	
+    }
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
