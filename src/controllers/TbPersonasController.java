@@ -4,18 +4,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Main;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -25,11 +20,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Persona;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 
 import javafx.event.ActionEvent;
 
@@ -67,6 +57,8 @@ public class TbPersonasController implements Initializable{
     
     @FXML
     private Label lblPersona;
+    
+    private int personaIndex;
     
     @FXML
     void aniadirPersona(ActionEvent event) {
@@ -141,6 +133,8 @@ public class TbPersonasController implements Initializable{
     	if (tbViewPersonas.getSelectionModel().getSelectedItem() != null) {
     		Persona personMod = tbViewPersonas.getSelectionModel().getSelectedItem();
         	
+    		personaIndex = tbViewPersonas.getSelectionModel().getSelectedIndex();
+    		
         	tfNombre.setText(personMod.getNombre().toString());
         	
         	tfApellidos.setText(personMod.getApellido().toString());
@@ -152,6 +146,31 @@ public class TbPersonasController implements Initializable{
     @FXML
     void modPersona(ActionEvent event) {
     	
+    	Persona personMod = tbViewPersonas.getItems().get(personaIndex);
+    	
+    	personMod.setNombre(tfNombre.getText());
+		personMod.setApellidos(tfApellidos.getText());
+        personMod.setEdad(Integer.parseInt(tfEdad.getText()));
+        
+        boolean existe = false;
+        
+        int index = 0;
+        
+        for (Persona item : tbViewPersonas.getItems()) {
+        	
+        	if (index != personaIndex) {
+        		if (personMod.compararPersonas(item) == true) {
+            		existe = true;
+            	}
+        	}
+        	
+        	index++;
+        }
+        
+        if (existe == false) {
+        	tbViewPersonas.getItems().set(personaIndex, personMod);
+        }
+        
     }
     
     @FXML
@@ -161,6 +180,8 @@ public class TbPersonasController implements Initializable{
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		tbViewPersonas.setEditable(true);
 		
 		tbColNombre.setCellValueFactory(new PropertyValueFactory<Persona, String>("nombre"));
         

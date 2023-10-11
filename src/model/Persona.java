@@ -35,4 +35,14 @@ public class Persona {
 	public void setEdad(int edad) {
 		this.edad = edad;
 	}
+	
+	public boolean compararPersonas(Persona other) {
+		
+		if(this.getNombre().equals(other.getNombre()) && this.getApellido().equals(other.getApellido())) {
+			return true;
+		}
+		return false;
+		
+	}
+	
 }
