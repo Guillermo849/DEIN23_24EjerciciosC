@@ -1,5 +1,10 @@
 package controllers;
 
+/*
+ * Programa que añadirá personas a una tabla. Se podrán modificar o 
+ *   eliminar de la tabla
+ * */
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -127,6 +132,10 @@ public class TbPersonasController implements Initializable{
     	}
     }
     
+    /*
+     * Selecciona a la persona y pine sus datos en los campos TextFields
+     * */
+    
     @FXML
     void selectPersona(MouseEvent event) {
     	
@@ -143,6 +152,10 @@ public class TbPersonasController implements Initializable{
     	}
     }
     
+    /*
+     * Modificara la infomación de la persona si está ya no existe 
+     *   en la tabla (excluyendo a la persona seleccionada)
+     * */
     @FXML
     void modPersona(ActionEvent event) {
     	
@@ -173,8 +186,15 @@ public class TbPersonasController implements Initializable{
         
     }
     
+    /*
+     * Eliminara la persona seleccionada
+     * */
     @FXML
     void eliminarPersona(ActionEvent event) {
+    	
+    	if (personaIndex < 0) {
+    		tbViewPersonas.getItems().remove(personaIndex);
+    	}
     	
     }
     
