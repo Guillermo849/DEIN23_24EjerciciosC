@@ -63,7 +63,7 @@ public class TbPersonasController implements Initializable{
     @FXML
     private Label lblPersona;
     
-    private int personaIndex;
+    private int personaIndex = -1;
     
     @FXML
     void aniadirPersona(ActionEvent event) {
@@ -159,31 +159,32 @@ public class TbPersonasController implements Initializable{
     @FXML
     void modPersona(ActionEvent event) {
     	
-    	Persona personMod = tbViewPersonas.getItems().get(personaIndex);
-    	
-    	personMod.setNombre(tfNombre.getText());
-		personMod.setApellidos(tfApellidos.getText());
-        personMod.setEdad(Integer.parseInt(tfEdad.getText()));
-        
-        boolean existe = false;
-        
-        int index = 0;
-        
-        for (Persona item : tbViewPersonas.getItems()) {
+    	if (personaIndex > -1) {
+        	Persona personMod = tbViewPersonas.getItems().get(personaIndex);
         	
-        	if (index != personaIndex) {
-        		if (personMod.compararPersonas(item) == true) {
-            		existe = true;
+        	personMod.setNombre(tfNombre.getText());
+    		personMod.setApellidos(tfApellidos.getText());
+            personMod.setEdad(Integer.parseInt(tfEdad.getText()));
+            
+            boolean existe = false;
+            
+            int index = 0;
+            
+            for (Persona item : tbViewPersonas.getItems()) {
+            	
+            	if (index != personaIndex) {
+            		if (personMod.compararPersonas(item) == true) {
+                		existe = true;
+                	}
             	}
-        	}
-        	
-        	index++;
-        }
-        
-        if (existe == false) {
-        	tbViewPersonas.getItems().set(personaIndex, personMod);
-        }
-        
+            	
+            	index++;
+            }
+            
+            if (existe == false) {
+            	tbViewPersonas.getItems().set(personaIndex, personMod);
+            }
+    	}
     }
     
     /*
@@ -192,7 +193,7 @@ public class TbPersonasController implements Initializable{
     @FXML
     void eliminarPersona(ActionEvent event) {
     	
-    	if (personaIndex < 0) {
+    	if (personaIndex > -1) {
     		tbViewPersonas.getItems().remove(personaIndex);
     	}
     	
